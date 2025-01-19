@@ -81,17 +81,16 @@ export const WrestlingRoster = () => {
 
       <section>
         <h2 className="text-3xl md:text-7xl font-bold text-center mb-4 md:mb-8">ROSTER</h2>
-        <div className="flex flex-col md:flex-row justify-between items-center gap-4 mb-4 md:mb-8">
+        <div className="flex flex-col gap-6 md:flex-row md:justify-between items-center mb-4 md:mb-8">
+          {/* Search Bar */}
           <div className="relative w-full md:w-96 max-w-xl">
             <div className="relative group">
               <div className="absolute inset-0 bg-red-500/20 rounded-md blur-md group-hover:bg-red-500/30 transition-all duration-300" />
               <div className="relative flex items-center bg-gray-900/90 rounded-md border-2 border-gray-700 group-hover:border-red-500/50 transition-all duration-300">
                 <svg
-                  className="w-6 h-6 ml-3 text-gray-400 dark:text-white"
+                  className="w-6 h-6 ml-3 text-gray-400"
                   aria-hidden="true"
                   xmlns="http://www.w3.org/2000/svg"
-                  width="24"
-                  height="24"
                   fill="none"
                   viewBox="0 0 24 24"
                 >
@@ -107,14 +106,16 @@ export const WrestlingRoster = () => {
                   placeholder="Search wrestlers..."
                   value={searchQuery}
                   onChange={(e) => setSearchQuery(e.target.value)}
-                  className="w-full py-2.5 px-3 bg-transparent text-white placeholder-gray-400 focus:outline-none focus:ring-0 text-lg md:text-xl"
+                  className="w-full py-2.5 px-3 bg-transparent text-white placeholder-gray-400 focus:outline-none focus:ring-0 text-base sm:text-lg md:text-xl"
                 />
               </div>
             </div>
           </div>
+          {/* Filters */}
           <RosterFilters filters={filters} setFilters={setFilters} />
         </div>
-        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4 md:gap-6 max-w-6xl mx-auto text-center">
+
+        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-2 md:gap-4 max-w-6xl mx-auto text-center">
           {filteredRoster.map((wrestler) => (
             <WrestlerCard key={wrestler.id} wrestler={wrestler} isChampionSection={false} isRosterCard={true} />
           ))}
