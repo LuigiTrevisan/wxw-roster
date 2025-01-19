@@ -1,7 +1,7 @@
 export const WrestlerCard = ({ wrestler, isChampionSection, isRosterCard }) => {
   // Use fixed aspect ratios for responsiveness while maintaining a 3x4 size
   const cardClass = isRosterCard
-    ? "aspect-[3/4] w-60 sm:w-64 lg:w-72" // Adjust sizes for roster cards
+    ? "aspect-[3/4] w-32 sm:w-64 lg:w-72" // Adjust sizes for roster cards
     : "aspect-[3/4] w-64 sm:w-72 lg:w-80"; // Adjust sizes for champion cards
 
   return (
