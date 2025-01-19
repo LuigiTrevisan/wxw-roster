@@ -9,8 +9,8 @@ export const WrestlingRoster = () => {
   const [searchQuery, setSearchQuery] = useState('');
   const [filters, setFilters] = useState({
     gender: null,
-    showTagTeams: false
-  })
+    showTagTeams: false,
+  });
 
   useEffect(() => {
     setWrestlers(wrestlersData);
@@ -18,7 +18,7 @@ export const WrestlingRoster = () => {
 
   useEffect(() => {
     const preloadImages = async () => {
-      const imagePromises = wrestlersData.map(wrestler => {
+      const imagePromises = wrestlersData.map((wrestler) => {
         return new Promise((resolve, reject) => {
           const img = new Image();
           img.src = wrestler.image;
@@ -39,13 +39,12 @@ export const WrestlingRoster = () => {
   }, []);
 
   const champions = wrestlers
-    .filter(w => w.isChampion)
-    .sort((a, b) => a.name.localeCompare(b.name))
+    .filter((w) => w.isChampion)
+    .sort((a, b) => a.name.localeCompare(b.name));
 
-  const roster = wrestlers
-    .sort((a, b) => a.name.localeCompare(b.name))
+  const roster = wrestlers.sort((a, b) => a.name.localeCompare(b.name));
 
-  const filteredRoster = roster.filter(wrestler => {
+  const filteredRoster = roster.filter((wrestler) => {
     const matchesSearch = wrestler.name.toLowerCase().includes(searchQuery.toLowerCase());
     const matchesGender = !filters.gender || wrestler.gender === filters.gender;
     const matchesTeamType = filters.showTagTeams ? wrestler.isTagTeam : !wrestler.isTagTeam;
@@ -55,8 +54,8 @@ export const WrestlingRoster = () => {
 
   if (!imagesLoaded) {
     return (
-      <div className="jusitfy-center flex items-center flex-col min-h-screen p-16">
-        <img src="/images/wxw.png" alt="wXw" className="w-64 mb-8 fill-white" />
+      <div className="flex justify-center items-center flex-col min-h-screen p-16">
+        <img src="/images/wxw.png" alt="wXw" className="w-32 md:w-64 mb-8" />
         <div role="status">
           <svg aria-hidden="true" className="inline w-10 h-10 text-gray-200 animate-spin dark:text-gray-600 fill-red-600" viewBox="0 0 100 101" fill="none" xmlns="http://www.w3.org/2000/svg">
             <path d="M100 50.5908C100 78.2051 77.6142 100.591 50 100.591C22.3858 100.591 0 78.2051 0 50.5908C0 22.9766 22.3858 0.59082 50 0.59082C77.6142 0.59082 100 22.9766 100 50.5908ZM9.08144 50.5908C9.08144 73.1895 27.4013 91.5094 50 91.5094C72.5987 91.5094 90.9186 73.1895 90.9186 50.5908C90.9186 27.9921 72.5987 9.67226 50 9.67226C27.4013 9.67226 9.08144 27.9921 9.08144 50.5908Z" fill="currentColor" />
@@ -72,49 +71,52 @@ export const WrestlingRoster = () => {
     <div className="min-h-screen bg-[#120303] text-white p-8 flex flex-col items-center justify-center">
       <img src="/images/wxw.png" alt="wXw" className="w-64 mb-8 fill-white" />
       <section className="mb-12">
-        <h2 className="text-7xl font-bold text-center mb-8">CHAMPIONS</h2>
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-6 max-w-3x4 mx-auto text-center">
-          {champions.map(champion => (
-            <WrestlerCard
-              key={champion.id}
-              wrestler={champion}
-              isChampionSection={true}
-              isRosterCard={false}
-            />
+        <h2 className="text-3xl md:text-7xl font-bold text-center mb-4 md:mb-8">CHAMPIONS</h2>
+        <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-5 gap-4 md:gap-6 max-w-3x4 mx-auto text-center">
+          {champions.map((champion) => (
+            <WrestlerCard key={champion.id} wrestler={champion} isChampionSection={true} isRosterCard={false} />
           ))}
         </div>
       </section>
 
       <section>
-        <h2 className="text-7xl font-bold text-center mb-8">ROSTER</h2>
-        <div className="flex justify-between items-center gap-4 mb-8">
-          <div className="relative w-96 max-w-xl">
+        <h2 className="text-3xl md:text-7xl font-bold text-center mb-4 md:mb-8">ROSTER</h2>
+        <div className="flex flex-col md:flex-row justify-between items-center gap-4 mb-4 md:mb-8">
+          <div className="relative w-full md:w-96 max-w-xl">
             <div className="relative group">
               <div className="absolute inset-0 bg-red-500/20 rounded-md blur-md group-hover:bg-red-500/30 transition-all duration-300" />
               <div className="relative flex items-center bg-gray-900/90 rounded-md border-2 border-gray-700 group-hover:border-red-500/50 transition-all duration-300">
-                <svg class="w-6 h-6 ml-3 text-gray-400 dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
-                  <path stroke="currentColor" stroke-linecap="round" stroke-width="2" d="m21 21-3.5-3.5M17 10a7 7 0 1 1-14 0 7 7 0 0 1 14 0Z" />
+                <svg
+                  className="w-6 h-6 ml-3 text-gray-400 dark:text-white"
+                  aria-hidden="true"
+                  xmlns="http://www.w3.org/2000/svg"
+                  width="24"
+                  height="24"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                >
+                  <path
+                    stroke="currentColor"
+                    strokeLinecap="round"
+                    strokeWidth="2"
+                    d="m21 21-3.5-3.5M17 10a7 7 0 1 1-14 0 7 7 0 0 1 14 0Z"
+                  />
                 </svg>
                 <input
                   type="text"
                   placeholder="Search wrestlers..."
                   value={searchQuery}
                   onChange={(e) => setSearchQuery(e.target.value)}
-                  className="w-full py-2.5 px-3 bg-transparent text-white placeholder-gray-400 focus:outline-none focus:ring-0 text-xl"
+                  className="w-full py-2.5 px-3 bg-transparent text-white placeholder-gray-400 focus:outline-none focus:ring-0 text-lg md:text-xl"
                 />
               </div>
             </div>
           </div>
           <RosterFilters filters={filters} setFilters={setFilters} />
         </div>
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-6 max-w-3x4 mx-auto text-center">
-          {filteredRoster.map(wrestler => (
-            <WrestlerCard
-              key={wrestler.id}
-              wrestler={wrestler}
-              isChampionSection={false}
-              isRosterCard={true}
-            />
+        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4 md:gap-6 max-w-6xl mx-auto text-center">
+          {filteredRoster.map((wrestler) => (
+            <WrestlerCard key={wrestler.id} wrestler={wrestler} isChampionSection={false} isRosterCard={true} />
           ))}
         </div>
       </section>
