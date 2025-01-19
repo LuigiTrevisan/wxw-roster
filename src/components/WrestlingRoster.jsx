@@ -1,11 +1,16 @@
 import { useState, useEffect } from 'react';
 import { WrestlerCard } from './WrestlerCard';
 import { wrestlersData } from '../data/wrestlers';
+import { RosterFilters } from './RosterFilters';
 
 export const WrestlingRoster = () => {
   const [wrestlers, setWrestlers] = useState([]);
   const [imagesLoaded, setImagesLoaded] = useState(false);
-  const [searchQuery, setSearchQuery] = useState(''); // State for search query
+  const [searchQuery, setSearchQuery] = useState('');
+  const [filters, setFilters] = useState({
+    gender: null,
+    showTagTeams: false
+  })
 
   useEffect(() => {
     setWrestlers(wrestlersData);
@@ -38,12 +43,15 @@ export const WrestlingRoster = () => {
     .sort((a, b) => a.name.localeCompare(b.name))
 
   const roster = wrestlers
-    .filter(w => !w.isTagTeam)
     .sort((a, b) => a.name.localeCompare(b.name))
 
-  const filteredRoster = roster.filter(wrestler =>
-    wrestler.name.toLowerCase().includes(searchQuery.toLowerCase())
-  );
+  const filteredRoster = roster.filter(wrestler => {
+    const matchesSearch = wrestler.name.toLowerCase().includes(searchQuery.toLowerCase());
+    const matchesGender = !filters.gender || wrestler.gender === filters.gender;
+    const matchesTeamType = filters.showTagTeams ? wrestler.isTagTeam : !wrestler.isTagTeam;
+
+    return matchesSearch && matchesGender && matchesTeamType;
+  });
 
   if (!imagesLoaded) {
     return (
@@ -79,22 +87,25 @@ export const WrestlingRoster = () => {
 
       <section>
         <h2 className="text-7xl font-bold text-center mb-8">ROSTER</h2>
-        <div className="relative w-full max-w-xl mb-8">
-          <div className="relative group">
-            <div className="absolute inset-0 bg-red-500/20 rounded-md blur-md group-hover:bg-red-500/30 transition-all duration-300" />
-            <div className="relative flex items-center bg-gray-900/90 rounded-md border-2 border-gray-700 group-hover:border-red-500/50 transition-all duration-300">
-              <svg class="w-6 h-6 ml-3 text-gray-400 dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
-                <path stroke="currentColor" stroke-linecap="round" stroke-width="2" d="m21 21-3.5-3.5M17 10a7 7 0 1 1-14 0 7 7 0 0 1 14 0Z" />
-              </svg>
-              <input
-                type="text"
-                placeholder="Search wrestlers..."
-                value={searchQuery}
-                onChange={(e) => setSearchQuery(e.target.value)}
-                className="w-full py-2.5 px-3 bg-transparent text-white placeholder-gray-400 focus:outline-none focus:ring-0 text-xl"
-              />
+        <div className="flex justify-between items-center gap-4 mb-8">
+          <div className="relative w-96 max-w-xl">
+            <div className="relative group">
+              <div className="absolute inset-0 bg-red-500/20 rounded-md blur-md group-hover:bg-red-500/30 transition-all duration-300" />
+              <div className="relative flex items-center bg-gray-900/90 rounded-md border-2 border-gray-700 group-hover:border-red-500/50 transition-all duration-300">
+                <svg class="w-6 h-6 ml-3 text-gray-400 dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
+                  <path stroke="currentColor" stroke-linecap="round" stroke-width="2" d="m21 21-3.5-3.5M17 10a7 7 0 1 1-14 0 7 7 0 0 1 14 0Z" />
+                </svg>
+                <input
+                  type="text"
+                  placeholder="Search wrestlers..."
+                  value={searchQuery}
+                  onChange={(e) => setSearchQuery(e.target.value)}
+                  className="w-full py-2.5 px-3 bg-transparent text-white placeholder-gray-400 focus:outline-none focus:ring-0 text-xl"
+                />
+              </div>
             </div>
           </div>
+          <RosterFilters filters={filters} setFilters={setFilters} />
         </div>
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-6 max-w-3x4 mx-auto text-center">
           {filteredRoster.map(wrestler => (
