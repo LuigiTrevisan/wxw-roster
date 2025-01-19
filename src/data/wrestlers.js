@@ -425,7 +425,7 @@ export const wrestlersData = [
     image: "/images/wrestlers/deity.png",
     isChampion: false,
     order: 51,
-    gender: "male"
+    gender: "female"
   },
   {
     id: 52,
@@ -553,7 +553,7 @@ export const wrestlersData = [
     image: "/images/wrestlers/sorani.png",
     isChampion: false,
     order: 67,
-    gender: "female"
+    gender: "male"
   },
   {
     id: 68,
@@ -649,7 +649,7 @@ export const wrestlersData = [
     image: "/images/wrestlers/bozilla.png",
     isChampion: false,
     order: 79,
-    gender: "male"
+    gender: "female"
   },
   {
     id: 80,
