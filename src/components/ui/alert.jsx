@@ -8,7 +8,7 @@ const alertVariants = cva(
   {
     variants: {
       variant: {
-        default: "bg-background text-foreground border-blue-500",
+        default: "bg-blue-800 text-gray-100 border-white",
         destructive: "border-red-500 text-red-600 bg-red-50",
       },
     },
