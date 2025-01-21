@@ -1,4 +1,4 @@
-const Wrestler = require('../models/Wrestler');
+const Wrestler = require('../models/wrestler');
 
 const getAllWrestlers = async (req, res) => {
     console.log("getAllWrestlers");
