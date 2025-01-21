@@ -81,13 +81,13 @@ const updateWrestler = async (req, res) => {
                 error: 'Wrestler not found'
             });
         }
-        await Wrestler.findByIdAndUpdate(req.params.id, req.body, {
+        const updated = await Wrestler.findByIdAndUpdate(req.params.id, req.body, {
             new: true,
             runValidators: true
         });
         res.status(200).json({
             success: true,
-            data: wrestler
+            data: updated
         });
     } catch(error) {
         res.status(500).json({
@@ -107,7 +107,8 @@ const deleteWrestler = async (req, res) => {
                 error: 'Wrestler not found'
             });
         }
-        await wrestler.remove();
+
+        await Wrestler.findByIdAndDelete(req.params.id);
         res.status(200).json({
             success: true,
             data: wrestler
