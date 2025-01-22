@@ -19,7 +19,7 @@ export const WrestlerAdmin = () => {
     handleUpdate,
     handleDelete
   } = useWrestlers();
-  const { sortedData, sortConfig, sortTable, setData } = useSort(wrestlers);
+  const { sortedData, setData } = useSort(wrestlers);
   const { searchQuery, setSearchQuery, filteredData } = useSearch(sortedData);
   const [showForm, setShowForm] = useState(false);
   const [currentWrestler, setCurrentWrestler] = useState(null);
