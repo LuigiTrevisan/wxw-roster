@@ -3,7 +3,7 @@ import { WrestlerAdmin } from './components/WrestlerAdmin'
 
 function App() {
   return (
-    <WrestlerAdmin />
+    <WrestlingRoster />
   )
 }
 
