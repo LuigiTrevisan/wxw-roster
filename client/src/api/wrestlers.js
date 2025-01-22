@@ -46,4 +46,31 @@ const deleteWrestler = async (id) => {
     }
 };
 
-export { getAllWrestlers, getWrestlerById, createWrestler, updateWrestler, deleteWrestler };
+const uploadFile = async (file, name) => {
+    const formData = new FormData();
+    formData.append('file', file);
+    formData.append('name', name.replace(/\s+/g, '').replace(/\.[^/.]+$/, ""));
+
+    try {
+        const response = await axios.post(`${baseURL}/image`, formData, {
+            headers: {
+                'Content-Type': 'multipart/form-data'
+            }
+        });
+        return response.data;
+    } catch (error) {
+        console.error(error);
+    }
+};
+
+const deleteFile = async (name) => {
+    try {
+        const fileName = name.split('/').pop();
+        const response = await axios.delete(`${baseURL}/image/${fileName}`);
+        return response.data;
+    } catch (error) {
+        console.error(error);
+    }
+};
+
+export { getAllWrestlers, getWrestlerById, createWrestler, updateWrestler, deleteWrestler, uploadFile, deleteFile };

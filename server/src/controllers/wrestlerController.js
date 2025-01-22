@@ -1,7 +1,6 @@
 const Wrestler = require('../models/wrestler');
 
 const getAllWrestlers = async (req, res) => {
-    console.log("getAllWrestlers");
     try {
         const wrestlers = await Wrestler.find({}).sort({ name: 1 });
         res.status(200).json({
@@ -18,7 +17,6 @@ const getAllWrestlers = async (req, res) => {
 }
 
 const getWrestlerById = async (req, res) => {
-    console.log("getWrestlerById");
     try {
         const wrestler = await Wrestler.findById(req.params.id);
         if (!wrestler) {
@@ -40,7 +38,6 @@ const getWrestlerById = async (req, res) => {
 };
 
 const createWrestler = async (req, res) => {
-    console.log("createWrestler");
     try {
         requiredFields = ['name', 'gender']
         for (let field of requiredFields) {
@@ -72,7 +69,6 @@ const createWrestler = async (req, res) => {
 };
 
 const updateWrestler = async (req, res) => {
-    console.log("updateWrestler");
     try {
         const wrestler = await Wrestler.findById(req.params.id);
         if (!wrestler) {
@@ -98,7 +94,6 @@ const updateWrestler = async (req, res) => {
 };
 
 const deleteWrestler = async (req, res) => {
-    console.log('deleteWrestler');
     try {
         const wrestler = await Wrestler.findById(req.params.id);
         if (!wrestler) {

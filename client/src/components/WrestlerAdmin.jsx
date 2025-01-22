@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { PlusCircle, Pencil, Trash2, Search, X } from 'lucide-react';
 import { Alert, AlertDescription } from './ui/alert';
 import { Card, CardContent, CardHeader, CardTitle } from './ui/card';
-import { getAllWrestlers, createWrestler, updateWrestler, deleteWrestler } from '../api/wrestlers';
+import { getAllWrestlers, createWrestler, updateWrestler, deleteWrestler, uploadFile, deleteFile } from '../api/wrestlers';
 
 export const WrestlerAdmin = () => {
   const [wrestlers, setWrestlers] = useState([]);
@@ -73,6 +73,7 @@ export const WrestlerAdmin = () => {
 
   const confirmDelete = async () => {
     try {
+      await deleteFile(wrestlers.find(wrestler => wrestler._id === wrestlerToDelete).image);
       await deleteWrestler(wrestlerToDelete);
       await fetchWrestlers();
       setNotification({ type: 'success', message: 'Wrestler deleted successfully!' });
@@ -90,7 +91,7 @@ export const WrestlerAdmin = () => {
   };
 
   const [showUploadModal, setShowUploadModal] = useState(false);
-  const [uploadFile, setUploadFile] = useState({
+  const [fileToUpload, setFileToUpload] = useState({
     file: null,
     name: '',
     preview: ''
@@ -102,11 +103,29 @@ export const WrestlerAdmin = () => {
 
   const cancelUpload = () => {
     setShowUploadModal(false);
-    setUploadFile({
+    setFileToUpload({
       file: null,
       name: '',
       preview: ''
     });
+  }
+
+  const confirmUpload = () => {
+    if (fileToUpload.file && fileToUpload.name) {
+      uploadFile(fileToUpload.file, fileToUpload.name)
+        .then((response) => {
+          setFormData({ ...formData, image: response.data });
+          alert(`File "${fileToUpload.name}" uploaded successfully!`);
+        })
+        .catch((err) => {
+          alert('Failed to upload file. Please try again later.');
+        })
+        .finally(() => {
+          cancelUpload();
+        });
+    } else {
+      alert('Please select a file and enter a name.');
+    }
   }
 
   const resetForm = () => {
@@ -234,34 +253,22 @@ export const WrestlerAdmin = () => {
                     <label className="block text-sm font-medium mb-1">Select Image</label>
                     <input
                       type="file"
-                      onChange={(e) =>
-                        setUploadFile({
-                          ...uploadFile,
+                      accept='image/*'
+                      onChange={(e) => setFileToUpload({
                           file: e.target.files[0],
                           preview: e.target.files[0] ? URL.createObjectURL(e.target.files[0]) : '',
+                          name: e.target.files[0] ? e.target.files[0].name : ''
                         })
                       }
                       className="w-full p-2 border rounded-md"
                     />
                   </div>
 
-                  {/* File Name Input */}
-                  <div className="mt-4">
-                    <label className="block text-sm font-medium mb-1">File Name</label>
-                    <input
-                      type="text"
-                      value={uploadFile.name}
-                      onChange={(e) => setUploadFile({ ...uploadFile, name: e.target.value })}
-                      className="w-full p-2 border rounded-md"
-                      placeholder="Enter a name for the file"
-                    />
-                  </div>
-
                   {/* Preview */}
-                  {uploadFile.preview && (
+                  {fileToUpload.preview && (
                     <div className="mt-4 flex items-center gap-4">
                       <img
-                        src={uploadFile.preview}
+                        src={fileToUpload.preview}
                         alt="Wrestler Preview"
                         className="w-32 h-auto rounded-md border border-white"
                       />
@@ -272,10 +279,8 @@ export const WrestlerAdmin = () => {
                   <div className="flex justify-end gap-4 mt-6">
                     <button
                       onClick={() => {
-                        if (uploadFile.file && uploadFile.name) {
-                          alert(`File "${uploadFile.name}" uploaded successfully!`);
-                          setFormData({ ...formData, image: uploadFile.preview });
-                          cancelUpload();
+                        if (fileToUpload.file && fileToUpload.name) {
+                          confirmUpload();
                         } else {
                           alert('Please select a file and enter a name.');
                         }
@@ -362,7 +367,15 @@ export const WrestlerAdmin = () => {
                       <input
                         type="text"
                         value={formData.image}
-                        onChange={(e) => setFormData({ ...formData, image: e.target.value })}
+                        onChange={(e) => {
+                          e.preventDefault(); // Prevent any default browser behavior
+                          setFormData({ ...formData, image: e.target.value });
+                        }}
+                        onPaste={(e) => {
+                          e.preventDefault(); // Prevent default paste behavior
+                          const text = e.clipboardData.getData('text');
+                          setFormData({ ...formData, image: text });
+                        }}
                         className="w-full p-2 border rounded-md"
                         required
                       />
@@ -422,7 +435,7 @@ export const WrestlerAdmin = () => {
               </thead>
               <tbody>
                 {filteredWrestlers.map((wrestler) => (
-                  <tr key={wrestler.id} className="border-t hover:bg-gray-700">
+                  <tr key={wrestler._id} className="border-t hover:bg-gray-700">
                     <td className="px-4 py-3">{wrestler.name}</td>
                     <td className="px-4 py-3 capitalize">{wrestler.gender}</td>
                     <td className="px-4 py-3">{wrestler.isChampion ? 'Yes' : 'No'}</td>
