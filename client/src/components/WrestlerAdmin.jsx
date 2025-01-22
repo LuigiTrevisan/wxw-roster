@@ -2,9 +2,8 @@ import React, { useState, useEffect } from 'react';
 import { PlusCircle } from 'lucide-react';
 import { Alert, AlertDescription } from './ui/alert';
 import { Card, CardContent, CardHeader, CardTitle } from './ui/card';
-import { TableHeader } from './AdminPage/TableHeader';
 import { SearchBar } from './AdminPage/SearchBar';
-import { WrestlerRow  } from './AdminPage/WrestlerRow';
+import { WrestlerDesktopView, WrestlerMobileView } from './AdminPage/WrestlerRow';
 import { WrestlerForm } from './AdminPage/WrestlerForm';
 import { useWrestlers } from '../hooks/useWrestlers';
 import { useSort } from '../hooks/useSort';
@@ -42,16 +41,16 @@ export const WrestlerAdmin = () => {
   }
 
   return (
-    <div className="min-h-screen bg-gray-950 p-8">
+    <div className="min-h-screen bg-gray-950 p-4 md:p-8">
       <Card className="max-w-6xl mx-auto">
-        <CardHeader className="flex flex-row items-center justify-between">
-          <CardTitle className="text-2xl font-bold">Roster Management</CardTitle>
+        <CardHeader className="flex flex-col md:flex-row items-start md:items-center justify-between gap-4">
+          <CardTitle className="text-xl md:text-2xl font-bold">Roster Management</CardTitle>
           <button
             onClick={() => {
               setCurrentWrestler(null);
               setShowForm(true);
             }}
-            className="flex items-center gap-2 bg-blue-600 text-white px-4 py-2 rounded-md hover:bg-blue-700 transition-colors"
+            className="w-full md:w-auto flex items-center justify-center gap-2 bg-blue-600 text-white px-4 py-2 rounded-md hover:bg-blue-700 transition-colors"
           >
             <PlusCircle className="w-5 h-5" />
             Add Wrestler
@@ -92,52 +91,23 @@ export const WrestlerAdmin = () => {
             />
           )}
 
-          <div className="overflow-x-auto">
-            <table className="w-full">
-              <thead>
-                <tr className="bg-gray-900">
-                  <TableHeader
-                    label="Name"
-                    field="name"
-                    sortConfig={sortConfig}
-                    onSort={sortTable}
-                  />
-                  <TableHeader
-                    label="Gender"
-                    field="gender"
-                    sortConfig={sortConfig}
-                    onSort={sortTable}
-                  />
-                  <TableHeader
-                    label="Champion"
-                    field="isChampion"
-                    sortConfig={sortConfig}
-                    onSort={sortTable}
-                  />
-                  <TableHeader
-                    label="Tag Team"
-                    field="isTagTeam"
-                    sortConfig={sortConfig}
-                    onSort={sortTable}
-                  />
-                  <th className="px-4 py-3 text-center">Actions</th>
-                </tr>
-              </thead>
-              <tbody>
-                {filteredData.map((wrestler) => (
-                  <WrestlerRow
-                    key={wrestler._id}
-                    wrestler={wrestler}
-                    onEdit={() => {
-                      setCurrentWrestler(wrestler);
-                      setShowForm(true);
-                    }}
-                    onDelete={() => handleDelete(wrestler._id)}
-                  />
-                ))}
-              </tbody>
-            </table>
-          </div>
+
+          <WrestlerDesktopView
+            wrestlers={filteredData}
+            onEdit={(wrestler) => {
+              setCurrentWrestler(wrestler);
+              setShowForm(true);
+            }}
+            onDelete={handleDelete}
+          />
+          <WrestlerMobileView
+            wrestlers={filteredData}
+            onEdit={(wrestler) => {
+              setCurrentWrestler(wrestler);
+              setShowForm(true);
+            }}
+            onDelete={handleDelete}
+          />
         </CardContent>
       </Card>
     </div>

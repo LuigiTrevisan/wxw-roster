@@ -21,10 +21,12 @@ export const WrestlerForm = ({ wrestler, onSubmit, onClose }) => {
     };
 
     return (
-        <div className="fixed inset-0 bg-black bg-opacity-50 backdrop-blur-md flex items-center justify-center p-4">
-            <Card className="w-full max-w-xl">
-                <CardHeader className="flex flex-row items-center justify-between">
-                    <CardTitle>{wrestler ? 'Edit Wrestler' : 'Add New Wrestler'}</CardTitle>
+        <div className="fixed inset-0 bg-black bg-opacity-50 backdrop-blur-md flex items-center justify-center p-2 md:p-4">
+            <Card className="w-full max-w-xl max-h-[90vh] overflow-y-auto">
+                <CardHeader className="flex flex-row items-center justify-between sticky top-0 bg-background z-10">
+                    <CardTitle className="text-lg md:text-xl">
+                        {wrestler ? 'Edit Wrestler' : 'Add New Wrestler'}
+                    </CardTitle>
                     <button onClick={onClose} className="text-gray-200 hover:text-red-500">
                         <X className="w-5 h-5" />
                     </button>
@@ -109,17 +111,17 @@ export const WrestlerForm = ({ wrestler, onSubmit, onClose }) => {
                             </div>
                         )}
 
-                        <div className="flex justify-end gap-4 mt-6">
+                        <div className="flex flex-col md:flex-row justify-end gap-4 mt-6">
                             <button
                                 type="button"
                                 onClick={onClose}
-                                className="px-4 py-2 border rounded-md hover:text-red-500 hover:border-red-500"
+                                className="w-full md:w-auto px-4 py-2 border rounded-md hover:text-red-500 hover:border-red-500"
                             >
                                 Cancel
                             </button>
                             <button
                                 type="submit"
-                                className="px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 transition-colors"
+                                className="w-full md:w-auto px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 transition-colors"
                             >
                                 {wrestler ? 'Update' : 'Create'}
                             </button>
