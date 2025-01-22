@@ -1,15 +1,36 @@
 import React, { useState } from 'react';
 import { Pencil, Trash2, ChevronDown, ChevronUp } from 'lucide-react';
+import { TableHeader } from './TableHeader';
 
-export const WrestlerDesktopView = ({ wrestlers, onEdit, onDelete }) => (
+export const WrestlerDesktopView = ({ wrestlers, onEdit, onDelete, sortConfig, sortTable }) => (
   <div className="hidden md:block overflow-x-auto">
     <table className="w-full">
       <thead>
         <tr className="bg-gray-900">
-          <th className="px-4 py-3 text-left">Name</th>
-          <th className="px-4 py-3 text-left">Gender</th>
-          <th className="px-4 py-3 text-left">Champion</th>
-          <th className="px-4 py-3 text-left">Tag Team</th>
+          <TableHeader
+            label="Name"
+            field="name"
+            sortConfig={sortConfig}
+            onSort={sortTable}
+          />
+          <TableHeader
+            label="Gender"
+            field="gender"
+            sortConfig={sortConfig}
+            onSort={sortTable}
+          />
+          <TableHeader
+            label="Champion"
+            field="isChampion"
+            sortConfig={sortConfig}
+            onSort={sortTable}
+          />
+          <TableHeader
+            label="Tag Team"
+            field="isTagTeam"
+            sortConfig={sortConfig}
+            onSort={sortTable}
+          />
           <th className="px-4 py-3 text-center">Actions</th>
         </tr>
       </thead>
@@ -50,10 +71,10 @@ export const WrestlerMobileView = ({ wrestlers, onEdit, onDelete }) => {
     <div className="md:hidden space-y-2">
       {wrestlers.map((wrestler) => {
         const isExpanded = expandedId === wrestler._id;
-        
+
         return (
           <div key={wrestler._id} className="border rounded-lg bg-gray-800">
-            <div 
+            <div
               className="flex items-center justify-between px-4 py-3 cursor-pointer"
               onClick={() => setExpandedId(isExpanded ? null : wrestler._id)}
             >
@@ -63,7 +84,7 @@ export const WrestlerMobileView = ({ wrestlers, onEdit, onDelete }) => {
               </div>
               {isExpanded ? <ChevronUp className="w-5 h-5" /> : <ChevronDown className="w-5 h-5" />}
             </div>
-            
+
             {isExpanded && (
               <div className="px-4 pb-3 space-y-2 border-t border-gray-700">
                 <div className="flex justify-between text-sm">

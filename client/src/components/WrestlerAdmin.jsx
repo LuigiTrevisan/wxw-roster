@@ -19,7 +19,7 @@ export const WrestlerAdmin = () => {
     handleUpdate,
     handleDelete
   } = useWrestlers();
-  const { sortedData, setData } = useSort(wrestlers);
+  const { sortedData, setData, sortConfig, sortTable } = useSort(wrestlers);
   const { searchQuery, setSearchQuery, filteredData } = useSearch(sortedData);
   const [showForm, setShowForm] = useState(false);
   const [currentWrestler, setCurrentWrestler] = useState(null);
@@ -99,6 +99,8 @@ export const WrestlerAdmin = () => {
               setShowForm(true);
             }}
             onDelete={handleDelete}
+            sortConfig={sortConfig}
+            sortTable={sortTable}
           />
           <WrestlerMobileView
             wrestlers={filteredData}
