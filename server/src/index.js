@@ -4,6 +4,7 @@ const cors = require('cors');
 const connectDB = require('./config/database');
 const wrestlerRoutes = require('./routes/wrestlerRoutes');
 const uploadRoutes = require('./routes/uploadRoutes');
+const authRoutes = require('./routes/authRoutes');
 const { uploadFile, getFile } = require('./config/upload');
 const fs = require('fs');
 
@@ -16,6 +17,7 @@ app.use(express.json({ limit: '200mb', extended: true}));
 app.use(express.urlencoded({extended: true}));
 app.use('/wrestlers', wrestlerRoutes);
 app.use('/image', uploadRoutes);
+app.use('/login', authRoutes);
 
 const PORT = process.env.PORT || 3000;
 
