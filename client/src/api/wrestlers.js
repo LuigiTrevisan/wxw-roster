@@ -1,5 +1,5 @@
 import axios from 'axios';
-const baseURL = 'http://localhost:3000';
+const baseURL = import.meta.env.VITE_ENVIRONMENT === 'DEV' ? import.meta.env.VITE_BASE_URL_DEV : import.meta.env.VITE_BASE_URL_PROD;
 
 const getAllWrestlers = async () => {
     try {
