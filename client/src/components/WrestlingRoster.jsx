@@ -31,7 +31,7 @@ export const WrestlingRoster = () => {
         await Promise.all(imagePromises);
         setImagesLoaded(true);
       } catch (error) {
-        console.error('Error loading images', error);
+        throw new Error('Failed to load images');
       }
     };
 

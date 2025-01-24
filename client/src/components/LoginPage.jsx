@@ -1,17 +1,15 @@
 import React, { useState } from 'react';
 import { Lock, User, AlertTriangle } from 'lucide-react';
+import { useLogin } from '../hooks/useLogin';
 
 const LoginPage = () => {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
 
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    try {
-      // TODO
-    } catch (err) {
-      console.error('Login failed', err);
-    }
+  const { error, loading, handleLogin } = useLogin(username, password);
+
+  const onSubmit = (e) => {
+    handleLogin(e);
   };
 
   return (
@@ -29,7 +27,7 @@ const LoginPage = () => {
             </div>
           )}
           
-          <form onSubmit={handleSubmit} className="space-y-6">
+          <form onSubmit={onSubmit} className="space-y-6">
             <div>
               <label htmlFor="username" className="sr-only">
                 Username

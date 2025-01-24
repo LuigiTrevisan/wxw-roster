@@ -1,19 +1,20 @@
 import React from 'react';
-import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
 import { WrestlingRoster } from './components/WrestlingRoster'
 import { WrestlerAdmin } from './components/WrestlerAdmin'
 import LoginPage from './components/LoginPage'
-
-const baseURL = import.meta.env.VITE_ENVIRONMENT === 'DEV' ? import.meta.env.VITE_BASE_URL_DEV : import.meta.env.VITE_BASE_URL_PROD;
+import ProtectedRoute from './components/ProtectedRoute';
 
 function App() {
-  console.log(baseURL);
   return (
     <Router>
       <Routes>
-      <Route path="/" element={<WrestlingRoster />} />
-      <Route path="/login" element={<LoginPage />} />
-      <Route path="/admin" element={<WrestlerAdmin />} />
+        <Route path="/" element={<WrestlingRoster />} />
+        <Route path="/login" element={<LoginPage />} />
+        <Route element={<ProtectedRoute />}>
+          <Route path="/admin" element={<WrestlerAdmin />} />
+        </Route>
+        <Route path="*" element={<Navigate to="/login" replace />} />
       </Routes>
     </Router>
   )
