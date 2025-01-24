@@ -1,6 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const multer = require('multer');
+const verifyToken = require('../config/auth');
 const { uploadImage, getImage, deleteImage } = require('../controllers/uploadController');
 
 const upload = multer({
@@ -11,7 +12,7 @@ const upload = multer({
 });
 
 router.get('/:name', getImage);
-router.post('/', upload.single('file'), uploadImage);
-router.delete('/:name', deleteImage);
+router.post('/', upload.single('file'), verifyToken, uploadImage);
+router.delete('/:name', verifyToken, deleteImage);
 
 module.exports = router;
