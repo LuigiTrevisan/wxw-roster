@@ -73,6 +73,7 @@ export const useWrestlers = () => {
     loading,
     error,
     notification,
+    fetchWrestlers,
     handleCreate,
     handleUpdate,
     handleDelete
