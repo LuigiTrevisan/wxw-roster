@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { WrestlerCard } from './WrestlerCard';
 import { RosterFilters } from './RosterFilters';
 import { useWrestlers } from '../hooks/useWrestlers';
@@ -6,12 +6,38 @@ import { useWrestlers } from '../hooks/useWrestlers';
 export const WrestlingRoster = () => {
   const { wrestlers, loading, error } = useWrestlers();
   const [searchQuery, setSearchQuery] = useState('');
+  const [imagesLoaded, setImagesLoaded] = useState(false);
   const [filters, setFilters] = useState({
     gender: null,
     showTagTeams: false,
   });
 
-  if (loading) {
+  useEffect(() => {
+    if (wrestlers.count > 0 && !imagesLoaded) {
+      const preloadImages = async () => {
+        const imagePromises = wrestlers.data.map((wrestler) => {
+          return new Promise((resolve, reject) => {
+            const img = new Image();
+            img.src = wrestler.image;
+            img.onload = resolve;
+            img.onerror = reject;
+          });
+        });
+
+        try {
+          await Promise.all(imagePromises);
+          setImagesLoaded(true);
+        } catch (error) {
+          console.error('Failed to load images:', error);
+          setImagesLoaded(true);
+        }
+      };
+
+      preloadImages();
+    }
+  }, [wrestlers, imagesLoaded]);
+
+  if (loading || !imagesLoaded) {
     return (
       <div className="flex justify-center items-center flex-col min-h-screen p-16">
         <img src="/images/wxw.png" alt="wXw" className="w-32 md:w-64 mb-8" />
@@ -42,21 +68,19 @@ export const WrestlingRoster = () => {
     .filter((w) => w.isChampion)
     .sort((a, b) => a.name.localeCompare(b.name));
 
-  const roster = wrestlers.data.sort((a, b) => a.name.localeCompare(b.name));
-
-  const filteredRoster = roster.filter((wrestler) => {
+  const filteredRoster = wrestlers.data
+    .filter((wrestler) => {
     const matchesSearch = wrestler.name.toLowerCase().includes(searchQuery.toLowerCase());
     const matchesGender = !filters.gender || wrestler.gender === filters.gender;
     const matchesTeamType = filters.showTagTeams ? wrestler.isTagTeam : !wrestler.isTagTeam;
-
-    return matchesSearch && matchesGender && matchesTeamType;
-  });
+      return matchesSearch && matchesGender && matchesTeamType && !wrestler.isChampion;
+    })
+    .sort((a, b) => a.name.localeCompare(b.name));
 
   return (
     <div className="min-h-screen bg-[#120303] text-white p-8 flex flex-col items-center justify-center">
       <img src="/images/wxw.png" alt="wXw" className="w-64 mb-8 fill-white" />
       
-      {/* Champions Section */}
       <section className="mb-12">
         <h2 className="text-3xl md:text-7xl font-bold text-center mb-4 md:mb-8">CHAMPIONS</h2>
         <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-5 gap-4 md:gap-6 max-w-3x4 mx-auto text-center">
@@ -74,7 +98,6 @@ export const WrestlingRoster = () => {
       <section>
         <h2 className="text-3xl md:text-7xl font-bold text-center mb-4 md:mb-8">ROSTER</h2>
         <div className="flex flex-col gap-6 md:flex-row md:justify-between items-center mb-4 md:mb-8">
-          {/* Search Bar */}
           <div className="relative w-full md:w-96 max-w-xl">
             <div className="relative group">
               <div className="absolute inset-0 bg-red-500/20 rounded-md blur-md group-hover:bg-red-500/30 transition-all duration-300" />
@@ -120,4 +143,4 @@ export const WrestlingRoster = () => {
       </section>
     </div>
   );
-}
+};
