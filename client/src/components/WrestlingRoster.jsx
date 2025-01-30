@@ -38,11 +38,11 @@ export const WrestlingRoster = () => {
     );
   }
 
-  const champions = wrestlers
+  const champions = wrestlers.data
     .filter((w) => w.isChampion)
     .sort((a, b) => a.name.localeCompare(b.name));
 
-  const roster = wrestlers.sort((a, b) => a.name.localeCompare(b.name));
+  const roster = wrestlers.data.sort((a, b) => a.name.localeCompare(b.name));
 
   const filteredRoster = roster.filter((wrestler) => {
     const matchesSearch = wrestler.name.toLowerCase().includes(searchQuery.toLowerCase());
