@@ -26,7 +26,7 @@ export const useUpload = (setFormData, formData) => {
         if (fileToUpload.file && fileToUpload.name) {
             uploadFile(fileToUpload.file, fileToUpload.name)
                 .then((response) => {
-                    setFormData({ ...formData, image: response.data });
+                    setFormData({ ...formData, image: response.data.data });
                     alert(`File "${fileToUpload.name}" uploaded successfully!`);
                 })
                 .catch((err) => {

@@ -1,14 +1,12 @@
 export const WrestlerCard = ({ wrestler, isChampionSection, isRosterCard }) => {
-  // Use fixed aspect ratios for responsiveness while maintaining a 3x4 size
   const cardClass = isRosterCard
-    ? "aspect-[3/4] w-32 sm:w-64 lg:w-72" // Adjust sizes for roster cards
-    : "aspect-[3/4] w-64 sm:w-72 lg:w-80"; // Adjust sizes for champion cards
+    ? "aspect-[3/4] w-32 sm:w-64 lg:w-72" 
+    : "aspect-[3/4] w-64 sm:w-72 lg:w-80";
 
   return (
     <div className="p-2">
       <div className="bg-gradient-to-b from-[#454545] to-[#757575] overflow-hidden border-4 border-[#c7c7c7] rounded-lg">
         <div className="relative">
-          {/* Responsive image with the same aspect ratio as the card */}
           <img
             src={wrestler.image}
             alt={wrestler.name}
