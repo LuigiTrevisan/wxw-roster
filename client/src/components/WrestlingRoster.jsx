@@ -26,25 +26,6 @@ export const WrestlingRoster = () => {
     );
   }
 
-  useEffect(() => {
-    const preloadImages = async () => {
-      const imagePromises = wrestlersData.map((wrestler) => {
-        return new Promise((resolve, reject) => {
-          const img = new Image();
-          img.src = wrestler.image;
-          img.onload = resolve;
-          img.onerror = reject;
-        });
-      });
-
-      try {
-        await Promise.all(imagePromises);
-        setImagesLoaded(true);
-      } catch (error) {
-        throw new Error('Failed to load images');
-      }
-    };
-
   if (error) {
     return (
       <div className="min-h-screen bg-[#120303] text-white p-8 flex flex-col items-center justify-center">
@@ -139,4 +120,4 @@ export const WrestlingRoster = () => {
       </section>
     </div>
   );
-};
+}
