@@ -73,7 +73,7 @@ export const WrestlingRoster = () => {
     const matchesSearch = wrestler.name.toLowerCase().includes(searchQuery.toLowerCase());
     const matchesGender = !filters.gender || wrestler.gender === filters.gender;
     const matchesTeamType = filters.showTagTeams ? wrestler.isTagTeam : !wrestler.isTagTeam;
-      return matchesSearch && matchesGender && matchesTeamType && !wrestler.isChampion;
+      return matchesSearch && matchesGender && matchesTeamType;
     })
     .sort((a, b) => a.name.localeCompare(b.name));
 
